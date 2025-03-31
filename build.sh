@@ -1,6 +1,6 @@
 #!/bin/bash
 
-local modFile=${MOD_FILE}
+modFile=${MOD_FILE:-"mods.d/SnowyWeaponry.sh"}
 
 echo "::group::=== 🛠️ Building $(basename "$modFile") ==="
 
