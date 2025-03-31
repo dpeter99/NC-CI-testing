@@ -17,4 +17,4 @@ jobs:
         run: |
           mkdir BUILDROOT 
           cd BUILDROOT
-          git clone git@github.com:sciwhiz12/SnowyWeaponry.git
+          git clone https://github.com/sciwhiz12/SnowyWeaponry.git
