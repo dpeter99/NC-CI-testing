@@ -1,9 +1,11 @@
 #!/bin/bash
 
-MODFILE=${MOD_FILE:-""}
+local modFile=${MOD_FILE}
 
-if [[ -f "./mods.d/$MODFILE" ]]; then
-  echo "::group::=== 📦 $(basename "$MODFILE")==="
-  bash "$MODFILE"
+echo "::group::=== 🛠️ Building $(basename "$modFile") ==="
+
+if [[ -f "./$modFile" ]]; then
+  echo "::group::=== 📦 $(basename "$modFile")==="
+  bash "$modFile"
   echo "::endgroup::"
 fi

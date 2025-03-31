@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "::group::=== 🛠️ Building $(basename "$MOD_FILE") ==="
+
 source ./uitl.sh
 
 setup_build_environment
