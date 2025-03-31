@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 mkdir BUILDROOT
 cd BUILDROOT

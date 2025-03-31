@@ -9,6 +9,8 @@ jobs:
   get-changed-mods:
     name: Get changed mods
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -47,7 +49,7 @@ jobs:
           }
 
           console.log('Changed files:');
-          console.log(filteredFiles);
+          
 
           // Create the matrix JSON with the required structure
           const matrixItems = filteredFiles.map(file => {
@@ -59,6 +61,8 @@ jobs:
           const matrix = {
             include: matrixItems
           };
+          
+          console.log(matrix);
 
           // Set the output for the next job
           core.setOutput('matrix', JSON.stringify(matrix));
