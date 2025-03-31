@@ -84,4 +84,4 @@ jobs:
       - name: test
         env:
           MOD_FILE: ${{ matrix.mod }}
-        run: build.sh
+        run: ./build.sh
