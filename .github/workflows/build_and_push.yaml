@@ -6,12 +6,71 @@ on:
       - main
 
 jobs:
-  build-snow:
-    name: Build Snowy Weaponry
+  get-changed-mods:
+    name: Get changed mods
     runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Get changed mods and create matrix
+      id: set-matrix
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Get the commit SHA before and after the push
+          const { execSync } = require('child_process');
+
+          // For a push to main/master, compare with the previous commit
+          const baseCommit = execSync('git rev-parse HEAD~1').toString().trim();
+          const headCommit = execSync('git rev-parse HEAD').toString().trim();
+
+          console.log(`Comparing changes between ${baseCommit} and ${headCommit}`);
+
+          // Get list of changed files
+          const changedFiles = execSync(`git diff --name-only ${baseCommit} ${headCommit} -- ./mods.d`).toString().trim().split('\n');
+
+          // Filter out empty entries (in case there are no changes)
+          const filteredFiles = changedFiles.filter(file => file.length > 0);
+
+          if (filteredFiles.length === 0) {
+            console.log('No files changed');
+            // Provide a default to prevent matrix from being empty
+            core.setOutput('matrix', JSON.stringify({ include: [{ project: 'no-changes' }] }));
+            return;
+          }
+
+          console.log('Changed files:');
+          console.log(filteredFiles);
+
+          // Create the matrix JSON with the required structure
+          const matrixItems = filteredFiles.map(file => {
+            return {
+              mod: file
+            };
+          });
+
+          const matrix = {
+            include: matrixItems
+          };
+
+          // Set the output for the next job
+          core.setOutput('matrix', JSON.stringify(matrix));
+
+  build-snow:
+    name: Build mod
+    runs-on: ubuntu-latest
+    needs: get-changed-mods
+    strategy:
+      matrix: ${{ fromJson(needs.get-changed-files.outputs.matrix) }}
     steps:
       - name: Clone the repository
         uses: actions/checkout@v4
+
+      - name: Process changed file
+        run: |
+          echo "Processing mod: ${{ matrix.mod }}"
 
       - name: test
         run: |
