@@ -2,8 +2,8 @@
 
 MODFILE=${MOD_FILE:-""}
 
-if [[ -f "./mods.d/$MODFILEt" ]]; then
-  echo "::group::=== 📦 $(basename "$MODFILEt")==="
-  bash "$MODFILEt"
+if [[ -f "./mods.d/$MODFILE" ]]; then
+  echo "::group::=== 📦 $(basename "$MODFILE")==="
+  bash "$MODFILE"
   echo "::endgroup::"
 fi
