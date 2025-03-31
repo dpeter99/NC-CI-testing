@@ -17,14 +17,19 @@ jobs:
     - name: Get changed mods and create matrix
       id: set-matrix
       uses: actions/github-script@v6
+      env:
+        BEFORE_SHA: ${{ github.event.before }}
+        AFTER_SHA: ${{ github.event.after }}
       with:
         script: |
+          const { BEFORE_SHA, AFTER_SHA } = process.env;
+          
           // Get the commit SHA before and after the push
           const { execSync } = require('child_process');
 
           // For a push to main/master, compare with the previous commit
-          const baseCommit = execSync('git rev-parse HEAD~1').toString().trim();
-          const headCommit = execSync('git rev-parse HEAD').toString().trim();
+          const baseCommit = execSync(`git rev-parse ${BEFORE_SHA}`).toString().trim();
+          const headCommit = execSync(`git rev-parse HEAD`).toString().trim();
 
           console.log(`Comparing changes between ${baseCommit} and ${headCommit}`);
 
