@@ -1,0 +1,20 @@
+name: Build snow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-snow:
+    name: Build Snowy Weaponry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v4
+
+      - name: test
+        run: |
+          mkdir BUILDROOT 
+          cd BUILDROOT
+          git clone git@github.com:sciwhiz12/SnowyWeaponry.git
