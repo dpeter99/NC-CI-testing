@@ -2,7 +2,8 @@
 
 echo "::group::=== 🛠️ Building $(basename "$MOD_FILE") ==="
 
-source ./uitl.sh
+echo "${UTILS_FILE}"
+source "${UTILS_FILE}"
 
 setup_build_environment
 
